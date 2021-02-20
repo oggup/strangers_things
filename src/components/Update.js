@@ -1,44 +1,41 @@
 import React, { useState } from "react";
-import {useHistory, Redirect} from 'react-router-dom'
+import { useHistory, Redirect, useParams } from "react-router-dom";
 import { callApi } from "../api";
 import Textfield from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-
-
-
-const Create = ({ token, userData }) => {
+const Update = ({ token, posts, setPosts, postId, setPostId, userData }) => {
   // const history = useHistory();
   // const redirectSubmit = history.push("/create-error");
+  //   const { postId } = useParams();
+  //   const post = posts.find((post) => postId === post._id);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [willDeliver, setWillDeliver] = useState(false);
-  const handleSubmit = async (event) => {
+  const handleEdit = async (event) => {
     event.preventDefault();
     const data = await callApi({
-      url: `/posts`,
+      url: `/posts/${postId}`,
       body: { post: { title, description, price, location, willDeliver } },
-      method: "POST",
+      method: "PATCH",
       token: token,
     });
     console.log("willDeliver:", willDeliver);
   };
 
-
-  
-return (
+  return (
     <>
-
+      {/* 
       <div>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleEdit} >
           <div>
             <Textfield
               type="text"
-              placeholder="title"
+              placeholder={title}
               value={title}
               onChange={(event) => {
                 setTitle(event.target.value);
@@ -48,7 +45,7 @@ return (
           <div>
             <Textfield
               type="text"
-              placeholder="price"
+              placeholder={price}
               value={price}
               onChange={(event) => {
                 setPrice(event.target.value);
@@ -57,7 +54,7 @@ return (
           </div>
           <Textfield
             type="text"
-            placeholder="description"
+            placeholder={description}
             value={description}
             onChange={(event) => {
               setDescription(event.target.value);
@@ -66,7 +63,7 @@ return (
           <div>
             <Textfield
               type="text"
-              placeholder="location"
+              placeholder={location}
               value={location}
               onChange={(event) => {
                 setLocation(event.target.value);
@@ -88,11 +85,11 @@ return (
             Submit
           </Button>
         </form>
-      </div>
+      </div> */}
     </>
   );
 };
 // if (!userData._id){return <Redirect to={"/create-error"}/>}else
 // {  }
 
-export default Create;
+export default Update;

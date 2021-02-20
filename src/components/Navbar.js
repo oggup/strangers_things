@@ -30,6 +30,9 @@ const Navbar = ({ userData, setUserData, setToken }) => {
           <Link to={"/login"}>Login/Register</Link>
         )}
       </div>
+      <div>
+      <Link to={"/update"}>Edit Listing</Link>
+      </div>
     </nav>
   );
 };

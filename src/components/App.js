@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { AccountForm, Posts, Post, Navbar, Dashboard, Create,CreateError } from "./";
+import {
+  AccountForm,
+  Update,
+  Posts,
+  Post,
+  Navbar,
+  Dashboard,
+  Create,
+  CreateError,
+} from ".";
 import { Route } from "react-router-dom";
 import { callApi } from "../api";
 
@@ -23,6 +32,7 @@ const App = () => {
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState({});
   const [posts, setPosts] = useState([]);
+  const [postId, setPostId] = useState(null);
   console.log(`Token is: ${token}`);
 
   useEffect(async () => {
@@ -49,7 +59,9 @@ const App = () => {
       />
       {userData.username && <div> Welcome, {userData.username}!</div>}
       <Route exact path="/posts">
-        <Posts posts={posts} />
+        <Posts posts={posts}
+        token={token}
+        userData={userData} />
       </Route>
       <Route path="/posts/:postId">
         <Post posts={posts} />
@@ -72,8 +84,17 @@ const App = () => {
         />
       </Route>
       <Route path="/create">
-        <Create token ={token}
-        userData={userData} />
+        <Create token={token} userData={userData} />
+      </Route>
+      <Route path="/update/:postId">
+        <Update
+          posts={posts}
+          setPosts={setPosts}
+          postId={postId}
+          setPostId={setPostId}
+          token={token}
+          userData={userData}
+        />
       </Route>
       <Route path="/create-error">
         <CreateError />
