@@ -68,7 +68,7 @@ const Posts = ({ posts, token, userData }) => {
     searchTerm.length > 0
       ? posts.filter((post) => postMatches(post, searchTerm))
       : posts;
-  console.log(postsToDisplay);
+  console.log("posts to display:", postsToDisplay);
   return (
     <>
       <div style={styles.searchContainer}>
@@ -79,7 +79,7 @@ const Posts = ({ posts, token, userData }) => {
           style={styles.searchInput}
           value={searchTerm}
           onChange={(event) => {
-            console.log(event.target.value);
+            console.log("searchterm:", event.target.value);
             updateSearchTerm(event.target.value);
           }}
         />
@@ -130,4 +130,4 @@ const Posts = ({ posts, token, userData }) => {
   );
 };
 
-export default Posts;
+export { Posts, SendMessage };

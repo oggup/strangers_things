@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import {useHistory, Redirect} from 'react-router-dom'
+import { useHistory, Redirect } from "react-router-dom";
 import { callApi } from "../api";
 import Textfield from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
-
-
 
 const Create = ({ token, userData }) => {
   // const history = useHistory();
@@ -28,13 +25,10 @@ const Create = ({ token, userData }) => {
     console.log("willDeliver:", willDeliver);
   };
 
-
-  
-return (
+  return (
     <>
-
       <div>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit}>
           <div>
             <Textfield
               type="text"
@@ -77,7 +71,9 @@ return (
             <FormControlLabel
               control={
                 <Checkbox
-                onChange={(event) => setWillDeliver(event.currentTarget.checked)}
+                  onChange={(event) =>
+                    setWillDeliver(event.currentTarget.checked)
+                  }
                 />
               }
               label="Willing to deliver?"

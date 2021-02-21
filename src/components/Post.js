@@ -1,7 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { SendMessage } from "./Posts";
 
-const Post = ({ posts }) => {
+const Post = ({ posts, token }) => {
   const { postId } = useParams();
   const post = posts.find((post) => postId === post._id);
 
@@ -15,6 +16,9 @@ const Post = ({ posts }) => {
         <div>Price: {post.price}</div>
         <div>Location: {post.location}</div>
         <div>Delivers: {post.willDeliver ? "Yes" : " no "}</div>
+      </div>
+      <div>
+        <SendMessage token={token} post={post} />
       </div>
     </>
   );

@@ -32,12 +32,14 @@ const App = () => {
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState({});
   const [posts, setPosts] = useState([]);
+  const [myPosts, setMyposts] = useState([]);
   const [postId, setPostId] = useState(null);
-  console.log(`Token is: ${token}`);
+  const [isLoggedin, setIsLoggedIn] = useState(false);
 
   useEffect(async () => {
     if (!token) {
       setToken(localStorage.getItem("token"));
+      setIsLoggedIn(false);
       return;
     }
     const data = await fetchUserData(token);
@@ -48,6 +50,9 @@ const App = () => {
     setPosts(posts);
     console.log("Posts:", posts);
   }, [token]);
+  console.log(`Token is: ${token}`);
+
+  console.log("userData", userData);
 
   return (
     <>
@@ -59,15 +64,13 @@ const App = () => {
       />
       {userData.username && <div> Welcome, {userData.username}!</div>}
       <Route exact path="/posts">
-        <Posts posts={posts}
-        token={token}
-        userData={userData} />
+        <Posts posts={posts} token={token} userData={userData} />
       </Route>
       <Route path="/posts/:postId">
-        <Post posts={posts} />
+        <Post posts={posts} token={token} userData={userData} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard posts={posts} />
+        <Dashboard posts={posts} token={token} userData={userData} />
       </Route>
       <Route path="/login">
         <AccountForm
