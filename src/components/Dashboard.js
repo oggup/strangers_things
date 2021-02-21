@@ -41,7 +41,7 @@ const SendMessage = ({ token, post }) => {
       method: "POST",
       token: token,
     });
-    console.log('message data:', data)
+    console.log(data);
   };
   return (
     <>
@@ -61,15 +61,17 @@ const SendMessage = ({ token, post }) => {
     </>
   );
 };
-
-const Delete = ({ token, post }) => {
+const Delete = ({ token, post, setPosts }) => {
+  const [messageBody, setMessageBody] = useState("");
   const handleDelete = async (event) => {
     event.preventDefault();
     const data = await callApi({
       url: `/posts/${post._id}`,
+      body: { message: { content: messageBody } },
       method: "DELETE",
       token: token,
     });
+    console.log("delete data:", data);
   };
   return (
     <>
@@ -81,8 +83,7 @@ const Delete = ({ token, post }) => {
     </>
   );
 };
-const Dashboard = ({ token, userData }) => {
-  console.log("userData:", userData);
+const Dashboard = ({ posts, token, userData }) => {
   const history = useHistory();
   const [searchTerm, updateSearchTerm] = useState("");
   const postsToDisplay =
@@ -90,32 +91,6 @@ const Dashboard = ({ token, userData }) => {
       ? userData.posts.filter((post) => postMatches(post, searchTerm))
       : userData.posts;
   console.log("posts to display:", postsToDisplay);
-
-
-
-  const Delete = ({ token, post }) => {
-    const [messageBody, setMessageBody] = useState("");
-    const handleDelete = async (event) => {
-      event.preventDefault();
-      const data = await callApi({
-        url: `/posts/${post._id}`,
-        body: { message: { content: messageBody } },
-        method: "DELETE",
-        token: token,
-      });
-      console.log('delete data:', data)
-    };
-    return (
-      <>
-        <form onSubmit={handleDelete}>
-          <Button type="submit" onClick={handleDelete}>
-            Delete
-          </Button>
-        </form>
-      </>
-    );
-  };
-
 
   return (
     <>
@@ -140,7 +115,7 @@ const Dashboard = ({ token, userData }) => {
             <div>Description : {post.description}</div>
             <div>Created at: {post.createdAt}</div>
             <div>
-              {token && post.isAuthor ? (
+              {userData._id === post.author._id ? (
                 <>
                   <div>Messages: {post.messages}</div>
                   <div>
@@ -169,7 +144,9 @@ const Dashboard = ({ token, userData }) => {
             >
               View Post
             </Button>
-            <Delete token={token} post={post}/>
+            {userData._id === post.author._id ? (
+              <Delete token={token} post={post} />
+            ) : null}
           </div>
         ))
       ) : (
@@ -178,5 +155,4 @@ const Dashboard = ({ token, userData }) => {
     </>
   );
 };
-
 export default Dashboard;

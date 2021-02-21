@@ -41,7 +41,7 @@ const SendMessage = ({ token, post }) => {
       method: "POST",
       token: token,
     });
-    console.log(data)
+    console.log(data);
   };
   return (
     <>
@@ -71,7 +71,7 @@ const Delete = ({ token, post, setPosts }) => {
       method: "DELETE",
       token: token,
     });
-    console.log('delete data:', data)
+    console.log("delete data:", data);
   };
   return (
     <>
@@ -83,7 +83,7 @@ const Delete = ({ token, post, setPosts }) => {
     </>
   );
 };
-const Posts = ({ posts, token, userData}) => {
+const Posts= ({ posts, token, userData }) => {
   const history = useHistory();
   const [searchTerm, updateSearchTerm] = useState("");
   const postsToDisplay =
@@ -91,7 +91,6 @@ const Posts = ({ posts, token, userData}) => {
       ? posts.filter((post) => postMatches(post, searchTerm))
       : posts;
   console.log("posts to display:", postsToDisplay);
-  
 
   return (
     <>
@@ -116,7 +115,7 @@ const Posts = ({ posts, token, userData}) => {
             <div>Description : {post.description}</div>
             <div>Created at: {post.createdAt}</div>
             <div>
-              {userData._id=== post.author._id ? (
+              {userData._id === post.author._id ? (
                 <>
                   <div>Messages: {post.messages}</div>
                   <div>
@@ -145,8 +144,9 @@ const Posts = ({ posts, token, userData}) => {
             >
               View Post
             </Button>
-            {userData._id=== post.author._id?<Delete token={token} post={post}/>:null}
-
+            {userData._id === post.author._id ? (
+              <Delete token={token} post={post} />
+            ) : null}
           </div>
         ))
       ) : (
@@ -155,5 +155,4 @@ const Posts = ({ posts, token, userData}) => {
     </>
   );
 };
-
 export { Posts, SendMessage };
