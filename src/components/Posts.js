@@ -41,6 +41,7 @@ const SendMessage = ({ token, post }) => {
       method: "POST",
       token: token,
     });
+    console.log(data)
   };
   return (
     <>
@@ -60,8 +61,29 @@ const SendMessage = ({ token, post }) => {
     </>
   );
 };
-const Posts = ({ posts, token, userData }) => {
-  console.log("userData:", userData);
+const Delete = ({ token, post, setPosts }) => {
+  const [messageBody, setMessageBody] = useState("");
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    const data = await callApi({
+      url: `/posts/${post._id}`,
+      body: { message: { content: messageBody } },
+      method: "DELETE",
+      token: token,
+    });
+    console.log('delete data:', data)
+  };
+  return (
+    <>
+      <form onSubmit={handleDelete}>
+        <Button type="submit" onClick={handleDelete}>
+          Delete
+        </Button>
+      </form>
+    </>
+  );
+};
+const Posts = ({ posts, token, userData}) => {
   const history = useHistory();
   const [searchTerm, updateSearchTerm] = useState("");
   const postsToDisplay =
@@ -69,6 +91,8 @@ const Posts = ({ posts, token, userData }) => {
       ? posts.filter((post) => postMatches(post, searchTerm))
       : posts;
   console.log("posts to display:", postsToDisplay);
+  
+
   return (
     <>
       <div style={styles.searchContainer}>
@@ -92,7 +116,7 @@ const Posts = ({ posts, token, userData }) => {
             <div>Description : {post.description}</div>
             <div>Created at: {post.createdAt}</div>
             <div>
-              {token && post.isAuthor ? (
+              {userData._id=== post.author._id ? (
                 <>
                   <div>Messages: {post.messages}</div>
                   <div>
@@ -121,6 +145,8 @@ const Posts = ({ posts, token, userData }) => {
             >
               View Post
             </Button>
+            {userData._id=== post.author._id?<Delete token={token} post={post}/>:null}
+
           </div>
         ))
       ) : (

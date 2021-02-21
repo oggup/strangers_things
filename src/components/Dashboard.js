@@ -31,7 +31,7 @@ const postMatches = (post, searchTerm) => {
   }
 };
 
-const SendMessage = ({ token, userData }) => {
+const SendMessage = ({ token, post }) => {
   const [messageBody, setMessageBody] = useState("");
   const handleSend = async (event) => {
     event.preventDefault();
@@ -41,6 +41,7 @@ const SendMessage = ({ token, userData }) => {
       method: "POST",
       token: token,
     });
+    console.log('message data:', data)
   };
   return (
     <>
@@ -60,6 +61,26 @@ const SendMessage = ({ token, userData }) => {
     </>
   );
 };
+
+const Delete = ({ token, post }) => {
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    const data = await callApi({
+      url: `/posts/${post._id}`,
+      method: "DELETE",
+      token: token,
+    });
+  };
+  return (
+    <>
+      <form onSubmit={handleDelete}>
+        <Button type="submit" onClick={handleDelete}>
+          Delete
+        </Button>
+      </form>
+    </>
+  );
+};
 const Dashboard = ({ token, userData }) => {
   console.log("userData:", userData);
   const history = useHistory();
@@ -69,6 +90,33 @@ const Dashboard = ({ token, userData }) => {
       ? userData.posts.filter((post) => postMatches(post, searchTerm))
       : userData.posts;
   console.log("posts to display:", postsToDisplay);
+
+
+
+  const Delete = ({ token, post }) => {
+    const [messageBody, setMessageBody] = useState("");
+    const handleDelete = async (event) => {
+      event.preventDefault();
+      const data = await callApi({
+        url: `/posts/${post._id}`,
+        body: { message: { content: messageBody } },
+        method: "DELETE",
+        token: token,
+      });
+      console.log('delete data:', data)
+    };
+    return (
+      <>
+        <form onSubmit={handleDelete}>
+          <Button type="submit" onClick={handleDelete}>
+            Delete
+          </Button>
+        </form>
+      </>
+    );
+  };
+
+
   return (
     <>
       <div style={styles.searchContainer}>
@@ -83,7 +131,7 @@ const Dashboard = ({ token, userData }) => {
             updateSearchTerm(event.target.value);
           }}
         />
-      </div>{" "}
+      </div>
       {postsToDisplay.length > 0 ? (
         postsToDisplay.map((post) => (
           <div key={post._id} style={{ border: "1px solid black" }}>
@@ -94,7 +142,7 @@ const Dashboard = ({ token, userData }) => {
             <div>
               {token && post.isAuthor ? (
                 <>
-                  <div>Messages: {userData.posts.messages}</div>
+                  <div>Messages: {post.messages}</div>
                   <div>
                     post messages:
                     {post.messages.map((message) => {
@@ -121,6 +169,7 @@ const Dashboard = ({ token, userData }) => {
             >
               View Post
             </Button>
+            <Delete token={token} post={post}/>
           </div>
         ))
       ) : (
