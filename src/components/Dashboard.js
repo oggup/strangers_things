@@ -88,71 +88,78 @@ const Dashboard = ({ posts, token, userData }) => {
   const [searchTerm, updateSearchTerm] = useState("");
   const postsToDisplay =
     searchTerm.length > 0
-      ? userData.posts.filter((post) => postMatches(post, searchTerm))
+      ? posts.filter((post) => postMatches(post, searchTerm))
       : userData.posts;
   console.log("posts to display:", postsToDisplay);
 
-  return (
-    <>
-      <div style={styles.searchContainer}>
-        <h2>Posts</h2>
-        <Textfield
-          type="text"
-          placeholder="Search posts"
-          style={styles.searchInput}
-          value={searchTerm}
-          onChange={(event) => {
-            console.log("searchterm:", event.target.value);
-            updateSearchTerm(event.target.value);
-          }}
-        />
-      </div>
-      {postsToDisplay.length > 0 ? (
-        postsToDisplay.map((post) => (
-          <div key={post._id} style={{ border: "1px solid black" }}>
-            <h5>{post.title}</h5>
-            <div>Posted by : {post.author.username}</div>
-            <div>Description : {post.description}</div>
-            <div>Created at: {post.createdAt}</div>
-            <div>
+  if (token){
+    return (
+      <>
+        <div style={styles.searchContainer}>
+          <h2>Posts</h2>
+          <Textfield
+            type="text"
+            placeholder="Search posts"
+            style={styles.searchInput}
+            value={searchTerm}
+            onChange={(event) => {
+              console.log("searchterm:", event.target.value);
+              updateSearchTerm(event.target.value);
+            }}
+          />
+        </div>
+        {postsToDisplay.length > 0 ? (
+          postsToDisplay.map((post) => (
+            <div key={post._id} style={{ border: "1px solid black" }}>
+              <h5>{post.title}</h5>
+              <div>Posted by : {post.author.username}</div>
+              <div>Description : {post.description}</div>
+              <div>Created at: {post.createdAt}</div>
+              <div>
+                {userData._id === post.author._id ? (
+                  <>
+                    <div>Messages: {post.messages}</div>
+                    <div>
+                      post messages:
+                      {post.messages.map((message) => {
+                        return (
+                          <>
+                            <div>From:{message.fromUser.username}</div>
+                            <div>Message: {message.content}</div>
+                          </>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : null}
+  
+                <SendMessage token={token} post={post} />
+              </div>
+              <form></form>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  history.push(`/posts/${post._id}`);
+                }}
+              >
+                View Post
+              </Button>
               {userData._id === post.author._id ? (
-                <>
-                  <div>Messages: {post.messages}</div>
-                  <div>
-                    post messages:
-                    {post.messages.map((message) => {
-                      return (
-                        <>
-                          <div>From:{message.fromUser.username}</div>
-                          <div>Message: {message.content}</div>
-                        </>
-                      );
-                    })}
-                  </div>
-                </>
+                <Delete token={token} post={post} />
               ) : null}
-
-              <SendMessage token={token} post={post} />
             </div>
-            <form></form>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => {
-                history.push(`/posts/${post._id}`);
-              }}
-            >
-              View Post
-            </Button>
-            {userData._id === post.author._id ? (
-              <Delete token={token} post={post} />
-            ) : null}
-          </div>
-        ))
-      ) : (
-        <h5> No posts to display</h5>
-      )}
-    </>
-  );
+          ))
+        ) : (
+          <h5> No posts to display</h5>
+        )}
+      </>
+    );
+  }
+
+
+  else {
+    return <h1>LOADING :0)</h1>;
+  }
 };
 export default Dashboard;

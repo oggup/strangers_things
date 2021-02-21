@@ -24,14 +24,15 @@ const Navbar = ({ userData, setUserData, setToken }) => {
       </div>
       <div>
         {userData._id ? (
-          <Link onClick={logOut}
-          to ='/'>Log Out</Link>
+          <Link onClick={logOut} to="/">
+            Log Out
+          </Link>
         ) : (
           <Link to={"/login"}>Login/Register</Link>
         )}
       </div>
       <div>
-      <Link to={"/update"}>Edit Listing</Link>
+        <Link to={"/update"}>Edit Listing</Link>
       </div>
     </nav>
   );
