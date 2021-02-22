@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { callApi } from "../api";
+import { Update } from ".";
 import Textfield from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+
 const styles = {
   searchContainer: {
     display: "flex",
@@ -83,16 +85,18 @@ const Delete = ({ token, post, setPosts }) => {
     </>
   );
 };
+
 const Dashboard = ({ posts, token, userData }) => {
   const history = useHistory();
   const [searchTerm, updateSearchTerm] = useState("");
+  const myMessages = userData.messages;
   const postsToDisplay =
     searchTerm.length > 0
       ? posts.filter((post) => postMatches(post, searchTerm))
       : userData.posts;
   console.log("posts to display:", postsToDisplay);
 
-  if (token){
+  if (token) {
     return (
       <>
         <div style={styles.searchContainer}>
@@ -116,23 +120,6 @@ const Dashboard = ({ posts, token, userData }) => {
               <div>Description : {post.description}</div>
               <div>Created at: {post.createdAt}</div>
               <div>
-                {userData._id === post.author._id ? (
-                  <>
-                    <div>Messages: {post.messages}</div>
-                    <div>
-                      post messages:
-                      {post.messages.map((message) => {
-                        return (
-                          <>
-                            <div>From:{message.fromUser.username}</div>
-                            <div>Message: {message.content}</div>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </>
-                ) : null}
-  
                 <SendMessage token={token} post={post} />
               </div>
               <form></form>
@@ -145,9 +132,8 @@ const Dashboard = ({ posts, token, userData }) => {
               >
                 View Post
               </Button>
-              {userData._id === post.author._id ? (
-                <Delete token={token} post={post} />
-              ) : null}
+              <Update token={token} post={post} />
+              <Delete token={token} post={post} />
             </div>
           ))
         ) : (
@@ -155,10 +141,7 @@ const Dashboard = ({ posts, token, userData }) => {
         )}
       </>
     );
-  }
-
-
-  else {
+  } else {
     return <h1>LOADING :0)</h1>;
   }
 };

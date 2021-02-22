@@ -6,36 +6,30 @@ import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-const Update = ({ token, posts, setPosts, postId, setPostId, userData }) => {
-  // const history = useHistory();
-  // const redirectSubmit = history.push("/create-error");
-  //   const { postId } = useParams();
-  //   const post = posts.find((post) => postId === post._id);
+const Update = ({ token, post }) => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [willDeliver, setWillDeliver] = useState(false);
-  const handleEdit = async (event) => {
+  const handleUpdate = async (event) => {
     event.preventDefault();
     const data = await callApi({
-      url: `/posts/${postId}`,
+      url: `/posts/${post._id}`,
       body: { post: { title, description, price, location, willDeliver } },
       method: "PATCH",
       token: token,
     });
-    console.log("willDeliver:", willDeliver);
   };
 
   return (
     <>
-      {/* 
       <div>
-        <form onSubmit={handleEdit} >
+        <form onSubmit={handleUpdate}>
           <div>
             <Textfield
               type="text"
-              placeholder={title}
+              placeholder={post.title}
               value={title}
               onChange={(event) => {
                 setTitle(event.target.value);
@@ -45,7 +39,7 @@ const Update = ({ token, posts, setPosts, postId, setPostId, userData }) => {
           <div>
             <Textfield
               type="text"
-              placeholder={price}
+              placeholder={post.price}
               value={price}
               onChange={(event) => {
                 setPrice(event.target.value);
@@ -54,7 +48,7 @@ const Update = ({ token, posts, setPosts, postId, setPostId, userData }) => {
           </div>
           <Textfield
             type="text"
-            placeholder={description}
+            placeholder={post.description}
             value={description}
             onChange={(event) => {
               setDescription(event.target.value);
@@ -62,8 +56,8 @@ const Update = ({ token, posts, setPosts, postId, setPostId, userData }) => {
           />
           <div>
             <Textfield
-              type="text"
-              placeholder={location}
+              type={"text"}
+              placeholder={post.location}
               value={location}
               onChange={(event) => {
                 setLocation(event.target.value);
@@ -74,7 +68,9 @@ const Update = ({ token, posts, setPosts, postId, setPostId, userData }) => {
             <FormControlLabel
               control={
                 <Checkbox
-                onChange={(event) => setWillDeliver(event.currentTarget.checked)}
+                  onChange={(event) =>
+                    setWillDeliver(event.currentTarget.checked)
+                  }
                 />
               }
               label="Willing to deliver?"
@@ -82,14 +78,12 @@ const Update = ({ token, posts, setPosts, postId, setPostId, userData }) => {
             />
           </div>
           <Button type="submit" variant="outlined" color="primary">
-            Submit
+            Update
           </Button>
         </form>
-      </div> */}
+      </div>
     </>
   );
 };
-// if (!userData._id){return <Redirect to={"/create-error"}/>}else
-// {  }
 
 export default Update;

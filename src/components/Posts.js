@@ -89,7 +89,7 @@ const Posts= ({ posts, token, userData }) => {
   const postsToDisplay =
     searchTerm.length > 0
       ? posts.filter((post) => postMatches(post, searchTerm))
-      : posts;
+      : userData.posts;
   console.log("posts to display:", postsToDisplay);
 
   return (
@@ -148,6 +148,7 @@ const Posts= ({ posts, token, userData }) => {
               <Delete token={token} post={post} />
             ) : null}
           </div>
+          
         ))
       ) : (
         <h5> No posts to display</h5>
@@ -156,3 +157,14 @@ const Posts= ({ posts, token, userData }) => {
   );
 };
 export { Posts, SendMessage };
+
+
+// <h2 className="messagesHeading">Messages</h2>
+//       {myMessages.map((message) => (
+//         <div
+//           key={message._id}
+//           style={{ borderTop: "1px solid black", padding: ".5em" }}
+//         >
+//           <h5>{message.fromUser.username}</h5>
+//           <div>Message:{message.content}</div>
+//           <div>Post: {message.post.title} </div>

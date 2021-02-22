@@ -90,14 +90,7 @@ const App = () => {
         <Create token={token} userData={userData} />
       </Route>
       <Route path="/update/:postId">
-        <Update
-          posts={posts}
-          setPosts={setPosts}
-          postId={postId}
-          setPostId={setPostId}
-          token={token}
-          userData={userData}
-        />
+        <Update token={token} userData={userData} />
       </Route>
       <Route path="/create-error">
         <CreateError />
