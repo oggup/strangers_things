@@ -134,11 +134,31 @@ const Dashboard = ({ posts, token, userData }) => {
               </Button>
               <Update token={token} post={post} />
               <Delete token={token} post={post} />
+              {myMessages.map((message) => (
+        <div
+          key={message._id}
+          style={{ borderTop: "1px solid black", padding: ".5em" }}
+        >
+          <h5>{message.fromUser.username}</h5>
+          <div>Message:{message.content}</div>
+          <div>Post: {message.post.title} </div>
+          <button
+            className="viewPostsButton"
+            onClick={() => {
+              history.push(`/reply/${message.post._id}`);
+            }}
+          >
+            Reply
+          </button>
+        </div>
+      ))}
             </div>
+            
           ))
         ) : (
           <h5> No posts to display</h5>
         )}
+        
       </>
     );
   } else {

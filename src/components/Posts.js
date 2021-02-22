@@ -89,7 +89,7 @@ const Posts= ({ posts, token, userData }) => {
   const postsToDisplay =
     searchTerm.length > 0
       ? posts.filter((post) => postMatches(post, searchTerm))
-      : userData.posts;
+      :posts;
   console.log("posts to display:", postsToDisplay);
 
   return (
